@@ -210,7 +210,11 @@ namespace ILRuntime.Runtime.Enviorment
 
         internal StackObject* ESP
         {
-            get => esp;
+            //get => esp;
+            get
+            {
+                return esp;
+            }
             set
             {
                 esp = value;

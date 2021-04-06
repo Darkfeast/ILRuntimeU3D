@@ -296,8 +296,9 @@ namespace ILRuntime.CLR.Method
                 {
                     t = appdomain.GetType(v.VariableType, DeclearingType, this);
                 }
-                if (t is CLRType ct)
+                if (t is CLRType)
                 {
+                    CLRType ct = t as CLRType;
                     var fields = ct.Fields;
                     ILRuntime.CLR.Utils.Extensions.GetTypeFlags(ct.TypeForCLR);
                 }
@@ -313,17 +314,19 @@ namespace ILRuntime.CLR.Method
                     case OpCodeEnum.Callvirt:
                         {
                             var m = appdomain.GetMethod(ins.TokenInteger);
-                            if (m is ILMethod ilm)
+                            if (m is ILMethod)
                             {
                                 //如果参数alreadyPrewarmed不为空，则不仅prewarm当前方法，还会递归prewarm所有子调用
                                 //如果参数alreadyPrewarmed为空，则只prewarm当前方法
+                                ILMethod ilm = m as ILMethod;
                                 if (alreadyPrewarmed != null)
                                 {
                                     ilm.Prewarm(alreadyPrewarmed);
                                 }
                             }
-                            else if (m is CLRMethod clrm)
+                            else if (m is CLRMethod)
                             {
+                                CLRMethod clrm = m as CLRMethod;
                                 ILRuntime.CLR.Utils.Extensions.GetTypeFlags(clrm.DeclearingType.TypeForCLR);
                             }
                         }

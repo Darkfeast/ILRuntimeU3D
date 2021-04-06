@@ -557,8 +557,9 @@ namespace ILRuntime.Runtime.Enviorment
                     for (int i = 0; i < genericArguments.Length; i++)
                     {
                         string key = null;
-                        if (bt is ILType ilt)
+                        if (bt is ILType)
                         {
+                            ILType ilt = bt as ILType;
                             key = ilt.TypeDefinition.GenericParameters[i].FullName;
                         }
                         else
