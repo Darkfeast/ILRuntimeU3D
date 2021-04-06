@@ -106,10 +106,14 @@ public class Invocation : MonoBehaviour
         }
 
         Debug.Log("指定参数类型来获得IMethod");
-        IType intType = appdomain.GetType(typeof(int));
+        //clrTypeMapping字典里面存放了所有的类型，包括热更类 和 基本类型 例如 System.Void  System.Int32 等等
+        //这里是获取到语法糖int类型的具体类型System.Int32
+        IType intType = appdomain.GetType(typeof(int)); 
         //参数类型列表
         List<IType> paramList = new List<ILRuntime.CLR.TypeSystem.IType>();
         paramList.Add(intType);
+        Debug.Log("ttt  " + type); //ttt  HotFix_Project.InstanceClass
+        Debug.Log("ttt2  " + intType); //ttt2  System.Int32
         //根据方法名称和参数类型列表获取方法
         method = type.GetMethod("StaticFunTest2", paramList, null);
         appdomain.Invoke(method, null, 456);
