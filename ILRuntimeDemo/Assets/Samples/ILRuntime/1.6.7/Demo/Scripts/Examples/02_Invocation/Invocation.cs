@@ -169,7 +169,7 @@ public class Invocation : MonoBehaviour
             //第二个ref/out参数初始值
             ctx.PushInteger(initialVal);
             //压入this
-            ctx.PushObject(obj);
+            ctx.PushObject(obj);  //这个obj 是前面一个参数的构造实例  传入的是233
             //压入参数1:addition
             ctx.PushInteger(100);
             //压入参数2: lst,由于是ref/out，需要压引用，这里是引用0号位，也就是第一个PushObject的位置
@@ -178,8 +178,8 @@ public class Invocation : MonoBehaviour
             ctx.PushReference(1);
             ctx.Invoke();
             //读取0号位的值
-            List<int> lst = ctx.ReadObject<List<int>>(0);
-            initialVal = ctx.ReadInteger(1);
+            List<int> lst = ctx.ReadObject<List<int>>(0);  //因为out 参数是一个List<int>  所以泛型方法传入List<int>
+            initialVal = ctx.ReadInteger(1);    //ref 参数是一个int
 
             Debug.Log(string.Format("lst[0]={0}, initialVal={1}", lst[0], initialVal));
         }
