@@ -30,9 +30,13 @@ namespace HotFix_Project
             UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest()");
         }
 
-        public static void StaticFunTest2(int a)
+        //public static void StaticFunTest2(int a)
+        //{
+        //    UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest2(int), a=" + a);
+        //}
+        public static void StaticFunTest2(float a)
         {
-            UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest2(), a=" + a);
+            UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest2(float), a=" + a);
         }
 
         public static void GenericMethod<T>(T a)

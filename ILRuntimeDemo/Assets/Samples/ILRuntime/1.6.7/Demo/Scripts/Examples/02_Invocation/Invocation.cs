@@ -87,36 +87,39 @@ public class Invocation : MonoBehaviour
         appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest", null, null);
         //调用带参数的静态方法
         Debug.Log("调用带参数的静态方法");
-        appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest2", null, 123);
+        appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest2", null, 123.0f);
 
 
         Debug.Log("通过IMethod调用方法");
         //预先获得IMethod，可以减低每次调用查找方法耗用的时间
         IType type = appdomain.LoadedTypes["HotFix_Project.InstanceClass"];
         //根据方法名称和参数个数获取方法
+        //那么问题来了 ， 重载方法， 参数个数一样，类型不一样
+        Darkfeast.Log("------------------------");
         IMethod method = type.GetMethod("StaticFunTest2", 1);
 
-        appdomain.Invoke(method, null, 123);
+        appdomain.Invoke(method, null, 123.0f);
 
         Debug.Log("通过无GC Alloc方式调用方法");
         using (var ctx = appdomain.BeginInvoke(method))
         {
-            ctx.PushInteger(123);
+            //ctx.PushInteger(123);
+            ctx.PushFloat(123.0f);
             ctx.Invoke();
         }
 
         Debug.Log("指定参数类型来获得IMethod");
         //clrTypeMapping字典里面存放了所有的类型，包括热更类 和 基本类型 例如 System.Void  System.Int32 等等
         //这里是获取到语法糖int类型的具体类型System.Int32
-        IType intType = appdomain.GetType(typeof(int)); 
+        IType intType = appdomain.GetType(typeof(float)); 
         //参数类型列表
         List<IType> paramList = new List<ILRuntime.CLR.TypeSystem.IType>();
         paramList.Add(intType);
-        Debug.Log("ttt  " + type); //ttt  HotFix_Project.InstanceClass
-        Debug.Log("ttt2  " + intType); //ttt2  System.Int32
+        Darkfeast.Log("ttt  " + type); //ttt  HotFix_Project.InstanceClass
+        Darkfeast.Log("ttt2  " + intType); //ttt2  System.Int32
         //根据方法名称和参数类型列表获取方法
         method = type.GetMethod("StaticFunTest2", paramList, null);
-        appdomain.Invoke(method, null, 456);
+        appdomain.Invoke(method, null, 456.0f);
 
         Debug.Log("实例化热更里的类");
         object obj = appdomain.Instantiate("HotFix_Project.InstanceClass", new object[] { 233 });
@@ -143,11 +146,14 @@ public class Invocation : MonoBehaviour
         
         Debug.Log("调用泛型方法");
         IType stringType = appdomain.GetType(typeof(string));
+        Darkfeast.Log($"stringType {stringType}");
         IType[] genericArguments = new IType[] { stringType };
         appdomain.InvokeGenericMethod("HotFix_Project.InstanceClass", "GenericMethod", genericArguments, null, "TestString");
 
         Debug.Log("获取泛型方法的IMethod");
         paramList.Clear();
+
+        intType = appdomain.GetType(typeof(int));
         paramList.Add(intType);
         genericArguments = new IType[] { intType };
         method = type.GetMethod("GenericMethod", paramList, genericArguments);
