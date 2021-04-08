@@ -9,6 +9,8 @@ namespace HotFix_Project
         static TestDelegateFunction delegateFunc;
         static Action<string> delegateAction;
 
+        static TestDelegateMethod2 del;
+
         public static void Initialize()
         {
             delegateMethod = Method;

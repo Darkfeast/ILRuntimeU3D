@@ -99,7 +99,7 @@ public class CLRBindingDemo : MonoBehaviour
         //请在生成了绑定代码后解除下面这行的注释
         //请在生成了绑定代码后解除下面这行的注释
         //请在生成了绑定代码后解除下面这行的注释
-        //ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
+        ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
     }
 
     unsafe void OnHotFixLoaded()
@@ -126,7 +126,8 @@ public class CLRBindingDemo : MonoBehaviour
             Debug.Log("请解除InitializeILRuntime方法中的注释对比有无CLR绑定对运行耗时和GC开销的影响");
             sw.Reset();
             sw.Start();
-            Profiler.BeginSample("RunTest2");
+            //这个参数是打个标记  方便在profiler里面看
+            Profiler.BeginSample("RunTest23333333333333");
             appdomain.Invoke(m, null, null);
             Profiler.EndSample();
             sw.Stop();
@@ -136,15 +137,16 @@ public class CLRBindingDemo : MonoBehaviour
         }
     }
 
-    void RunTest()
-    {
-        appdomain.Invoke("HotFix_Project.TestCLRBinding", "RunTest", null, null);
-    }
+    //void RunTest()
+    //{
+    //    appdomain.Invoke("HotFix_Project.TestCLRBinding", "RunTest", null, null);
+    //}
 
-    void RunTest2(IMethod m)
-    {
-        appdomain.Invoke(m, null, null);
-    }
+    //void RunTest2(IMethod m)
+    //{
+    //    Darkfeast.Log("Runtest2",E_ColorType.UI);
+    //    appdomain.Invoke(m, null, null);
+    //}
 
     private void OnDestroy()
     {

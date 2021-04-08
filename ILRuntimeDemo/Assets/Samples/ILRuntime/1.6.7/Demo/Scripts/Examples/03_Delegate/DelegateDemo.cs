@@ -11,6 +11,7 @@ using ILRuntime.Runtime.Intepreter;
 
 public delegate void TestDelegateMethod(int a);
 public delegate string TestDelegateFunction(int a);
+public delegate string TestDelegateMethod2(int a);
 
 
 public class DelegateDemo : MonoBehaviour
@@ -18,6 +19,8 @@ public class DelegateDemo : MonoBehaviour
     public static TestDelegateMethod TestMethodDelegate;
     public static TestDelegateFunction TestFunctionDelegate;
     public static System.Action<string> TestActionDelegate;
+
+    public static TestDelegateMethod2 test2;
 
     //AppDomain是ILRuntime的入口，最好是在一个单例类中保存，整个游戏全局就一个，这里为了示例方便，每个例子里面都单独做了一个
     //大家在正式项目中请全局只创建一个AppDomain
@@ -95,6 +98,8 @@ public class DelegateDemo : MonoBehaviour
         //ILRuntime内部是用Action和Func这两个系统内置的委托类型来创建实例的，所以其他的委托类型都需要写转换器
         //将Action或者Func转换成目标委托类型
 
+        //RegisterDelegateConvertor 这个方法 参数是一个func类型的，  func类型的传入和返回类型还都是委托
+        //这个action是传入参数， 就是Func里面的第一个参数  传入的委托
         appdomain.DelegateManager.RegisterDelegateConvertor<TestDelegateMethod>((action) =>
         {
             //转换器的目的是把Action或者Func转换成正确的类型，这里则是把Action<int>转换成TestDelegateMethod
@@ -136,6 +141,9 @@ public class DelegateDemo : MonoBehaviour
         Debug.Log("另外应该尽量减少不必要的跨域委托调用，如果委托只在热更DLL中用，是不需要进行任何注册的");
         Debug.Log("---------");
         Debug.Log("我们再来在Unity主工程中调用一下刚刚的委托试试");
+        //138行 已经调用热更dll 对当前类的委托字段绑定过了  注，这几个委托字段是静态的  热更dll里面是通过
+        // DelegateDemo.TestMethodDelegate = Method; 这样绑定的  如果是非static字段  猜测可以通过一个单例模式
+        //初始化时 将当前引用赋给单例里面   持有到当前类的引用  然后热更dll里面通过访问单例 拿到对应类的引用
         TestMethodDelegate(789);
         var str = TestFunctionDelegate(098);
         Debug.Log("!! OnHotFixLoaded str = " + str);

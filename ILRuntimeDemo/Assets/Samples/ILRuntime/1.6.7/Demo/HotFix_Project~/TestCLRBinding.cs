@@ -11,6 +11,7 @@ namespace HotFix_Project
             {
                 CLRBindingTestClass.DoSomeTest(i, i);
             }
+            UnityEngine.Debug.Log("R end ");
         }
     }
 }

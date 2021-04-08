@@ -80,6 +80,7 @@ public class CLRRedirectionDemo : MonoBehaviour
         appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
         //这里做一些ILRuntime的注册
+        //第二个参数是 Log 方法的参数的个数和类型 顺序不能乱
         var mi = typeof(Debug).GetMethod("Log", new System.Type[] { typeof(object) });
         appdomain.RegisterCLRMethodRedirection(mi, Log_11);
     }
