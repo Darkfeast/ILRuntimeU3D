@@ -13,7 +13,7 @@ public enum E_ColorType
 	Err,
 	Over
 }
-public class Darkfeast : MonoBehaviour
+public class Darkfeast
 {
 	static Application.LogCallback logCallback;
 	static bool openLogTrace;

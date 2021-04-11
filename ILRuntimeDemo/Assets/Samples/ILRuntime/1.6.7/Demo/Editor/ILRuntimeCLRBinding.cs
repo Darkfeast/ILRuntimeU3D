@@ -18,7 +18,7 @@ public class ILRuntimeCLRBinding
             domain.LoadAssembly(fs);
 
             //Crossbind Adapter is needed to generate the correct binding code
-            InitILRuntime(domain);
+            InitILRuntime(domain); //先注册进去用到的适配器  才能根据这些已注册的适配器生成对应的绑定代码
             ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/Samples/ILRuntime/Generated");
         }
 

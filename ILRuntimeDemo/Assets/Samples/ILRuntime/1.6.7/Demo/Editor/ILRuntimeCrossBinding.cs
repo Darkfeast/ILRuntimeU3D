@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.IO;
+
 [System.Reflection.Obfuscation(Exclude = true)]
 public class ILRuntimeCrossBinding
 {
@@ -18,7 +20,40 @@ public class ILRuntimeCrossBinding
             sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(typeof(TestClassBase), "ILRuntimeDemo"));
         }
 
-        AssetDatabase.Refresh();
+        Gen(typeof(Coroutine), nameof(Coroutine) + "Adaptor", "AdaptorSpace");
+        Gen(typeof(CoroutineDemo), nameof(CoroutineDemo) + "Adaptor", "AdaptorSpace");
+
+        AssetDatabase.Refresh(); 
+    }
+
+    static void Gen(Type t, string csName,string nameSpace, bool reRewrite=false)
+    {
+        string path = Application.dataPath + "/Samples/ILRuntime/Adaptor/";
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        string pathFile = path + csName + ".cs";
+
+        if(!File.Exists(pathFile))
+        {
+            StreamWriter sw = new StreamWriter(File.Create(pathFile));
+            sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(t, nameSpace));
+            //sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(t.GetType(), nameSpace));
+            sw.Close();
+        }
+        else
+        {
+            if(reRewrite)
+            {
+                StreamWriter sw = new StreamWriter(File.Create(pathFile));
+                sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(t, nameSpace));
+                //sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(t.GetType(), nameSpace));
+                sw.Close();
+            }
+        }
+        Darkfeast.Log("GenAdaptor:  " + t.FullName,E_ColorType.UI);
     }
 }
 #endif

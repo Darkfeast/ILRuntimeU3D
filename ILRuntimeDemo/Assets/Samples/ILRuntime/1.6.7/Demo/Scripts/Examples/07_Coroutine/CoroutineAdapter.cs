@@ -148,11 +148,16 @@ public class CoroutineAdapter : CrossBindingAdaptor
 
         public override string ToString()
         {
+            Darkfeast.Log("-----"); //调用this 会一直打印这个 然后栈溢出错误
             IMethod m = appdomain.ObjectType.GetMethod("ToString", 0);
             m = instance.Type.GetVirtualMethod(m);
             if (m == null || m is ILMethod)
             {
-                return instance.ToString();
+                return instance.ToString() + "  " + this.GetType();
+
+                //下面这行 多了个this  运行时就会报错 栈溢出 原因是递归调用了 this 就相当于this.ToString  然后这个ToString里面又是一个this
+                //StackOverflowException: The requested operation caused a stack overflow.
+                //return instance.ToString()+ "  "+this.GetType()  + "     "+this; 
             }
             else
                 return instance.Type.FullName;

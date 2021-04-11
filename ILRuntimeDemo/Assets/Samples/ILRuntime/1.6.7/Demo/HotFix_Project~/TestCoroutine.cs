@@ -8,6 +8,7 @@ namespace HotFix_Project
     {
         public static void RunTest()
         {
+            Darkfeast.Log("RunTest...");
             CoroutineDemo.Instance.DoCoroutine(Coroutine());
         }
 
