@@ -105,12 +105,14 @@ public class MonoBehaviourDemo : MonoBehaviour
         Debug.Log("因此我们需要挟持AddComponent方法，然后自己实现");
         Debug.Log("我们先销毁掉之前创建的不合法的MonoBehaviour");
         SetupCLRRedirection();
+        Darkfeast.Log("----------1");
         appdomain.Invoke("HotFix_Project.TestMonoBehaviour", "RunTest", null, gameObject);
 
         Debug.Log("可以看到已经成功了");
         Debug.Log("下面做另外一个实验");
         Debug.Log("GetComponent跟AddComponent类似，需要我们自己处理");
         SetupCLRRedirection2();
+         Darkfeast.Log("----------",E_ColorType.UI);
         appdomain.Invoke("HotFix_Project.TestMonoBehaviour", "RunTest2", null, gameObject);
         Debug.Log("成功了");
         Debug.Log("那我们怎么从Unity主工程获取热更DLL的MonoBehaviour呢？");

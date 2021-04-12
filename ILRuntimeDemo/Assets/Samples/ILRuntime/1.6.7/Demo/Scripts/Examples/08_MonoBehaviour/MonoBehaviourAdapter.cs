@@ -99,6 +99,7 @@ public class MonoBehaviourAdapter : CrossBindingAdaptor
 
             if (mUpdateMethod != null)
             {
+                //Darkfeast.Log("Update", E_ColorType.UI);
                 appdomain.Invoke(mUpdateMethod, instance, null);
             }
         }
