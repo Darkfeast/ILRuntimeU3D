@@ -197,7 +197,8 @@ namespace ILRuntime.Runtime.Intepreter
                     {
                         throw new NotSupportedException("Inheriting and implementing interface at the same time is not supported yet");
                     }
-                    Darkfeast.Log($"this {this.GetType()}      {this.ToString()} ");
+                    Darkfeast.Log($"this {this.GetType()}      {this.ToString()}    ");
+                    Darkfeast.Log($"this  {type}     {type.ReflectionType}");
                     clrInstance = ((Enviorment.CrossBindingAdaptor)type.FirstCLRInterface).CreateCLRInstance(type.AppDomain, this);
                     Darkfeast.Log($"clr ins {clrInstance.ToString()}");
                 }

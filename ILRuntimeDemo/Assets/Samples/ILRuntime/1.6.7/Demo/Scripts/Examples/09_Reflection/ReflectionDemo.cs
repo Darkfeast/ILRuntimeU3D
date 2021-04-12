@@ -90,7 +90,16 @@ public class ReflectionDemo : MonoBehaviour
         Debug.Log("LoadedTypes返回的是IType类型，但是我们需要获得对应的System.Type才能继续使用反射接口");
         var type = it.ReflectionType;
         Debug.Log("取得Type之后就可以按照我们熟悉的方式来反射调用了");
-        var ctor = type.GetConstructor(new System.Type[0]);
+        Darkfeast.Log("-----------");
+        //在Unity主工程中，无法通过Type.GetType来取得热更DLL内部定义的类，而只能通过以下方式得到System.Type实例：
+        //IType type = appdomain.LoadedTypes["TypeName"];
+        //Type t = type.ReflectedType;
+        Darkfeast.Log($"type {type}    class {it}    {it.GetType()}");
+
+
+
+        //var ctor = type.GetConstructor(new System.Type[0]);
+        var ctor = type.GetConstructor(new System.Type[0]); //这一行是传入一个空数组  就是无参构造
         var obj = ctor.Invoke(null);
         Debug.Log("打印一下结果");
         Debug.Log(obj);

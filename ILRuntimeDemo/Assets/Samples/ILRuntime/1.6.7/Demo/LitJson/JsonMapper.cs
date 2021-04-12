@@ -1051,6 +1051,9 @@ namespace LitJson
             custom_importers_table.Clear ();
         }
 
+
+        //重定向了 JsonMapper 里面的泛型方法ToObject 的三个重载方法
+        //tip:这个文件所在的目录下的所有文件都是litJson的源码  也可以把这些源码做成类库
         public unsafe static void RegisterILRuntimeCLRRedirection(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
         {
             foreach(var i in typeof(JsonMapper).GetMethods())

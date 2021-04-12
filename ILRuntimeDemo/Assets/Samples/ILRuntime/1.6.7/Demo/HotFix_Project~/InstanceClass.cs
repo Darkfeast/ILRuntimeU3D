@@ -9,6 +9,7 @@ namespace HotFix_Project
 
         public InstanceClass()
         {
+            Darkfeast.Log("0 ctor");
             UnityEngine.Debug.Log("!!! InstanceClass::InstanceClass()");
             this.id = 0;
         }

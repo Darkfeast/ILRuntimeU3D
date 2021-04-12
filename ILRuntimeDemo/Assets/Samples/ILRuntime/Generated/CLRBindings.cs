@@ -38,6 +38,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_Time_Binding.Register(app);
             UnityEngine_GameObject_Binding.Register(app);
+            Darkfeast_Binding.Register(app);
             CoroutineDemo_Binding.Register(app);
             UnityEngine_WaitForSeconds_Binding.Register(app);
             System_NotSupportedException_Binding.Register(app);
