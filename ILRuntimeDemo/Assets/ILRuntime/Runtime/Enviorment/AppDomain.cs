@@ -80,6 +80,9 @@ namespace ILRuntime.Runtime.Enviorment
             AllowUnboundCLRMethod = true;
             InvocationContext.InitializeDefaultConverters();
             loadedAssemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            //Darkfeast.Log($"assem {loadedAssemblies.Length}    {loadedAssemblies[0].Location}");
+            //loadedAssemblies.ToList().Print(true, (v) => { Darkfeast.Log(v.Location,E_ColorType.Over); });
+
             var mi = typeof(System.Runtime.CompilerServices.RuntimeHelpers).GetMethod("InitializeArray");
             RegisterCLRMethodRedirection(mi, CLRRedirections.InitializeArray);
             mi = typeof(AppDomain).GetMethod("GetCurrentStackTrace");
