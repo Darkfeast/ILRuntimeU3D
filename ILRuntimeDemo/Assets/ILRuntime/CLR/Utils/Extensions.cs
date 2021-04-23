@@ -316,7 +316,7 @@ namespace ILRuntime.CLR.Utils
             {
                 var t1 = arr[i].ParameterType;
                 var t2 = args[i].ParameterType;
-                if (t1 != t2 || t1.IsByRef != t2.IsByRef)
+                if (t1 != t2 || t1.IsByRef != t2.IsByRef)  //IsByRef ，是否通过引用传递
                     return false;
             }
             return true;

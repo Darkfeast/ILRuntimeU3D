@@ -428,7 +428,7 @@ namespace ILRuntime.Runtime.Enviorment
                 foreach (var t in module.GetTypes()) //获取所有此模块定义的类型
                 {
                     ILType type = new ILType(t, this);
-
+                    Darkfeast.Log($"module.getType()   {t.FullName}", E_ColorType.Err);
                     mapType[t.FullName] = type;
                     mapTypeToken[type.GetHashCode()] = type;
                     types.Add(type);
@@ -524,6 +524,7 @@ namespace ILRuntime.Runtime.Enviorment
         /// <returns></returns>
         public IType GetType(string fullname)
         {
+            //Darkfeast.Log("GetType by fullname",E_ColorType.UI);
             IType res;
             if (fullname == null)
             {
@@ -531,7 +532,11 @@ namespace ILRuntime.Runtime.Enviorment
             }
 
             if (mapType.TryGetValue(fullname, out res))
+            {
+                //Darkfeast.Log($"map Type  {fullname}");
                 return res;
+            }
+               
 
 
             string baseType;
@@ -570,6 +575,8 @@ namespace ILRuntime.Runtime.Enviorment
                         IType val = GetType(genericParams[i]);
                         if (val == null)
                             return null;
+
+                        Darkfeast.Log($"GetType  key{key}");
                         genericArguments[i] = new KeyValuePair<string, IType>(key, val);
                     }
                     bt = bt.MakeGenericInstance(genericArguments);
@@ -594,6 +601,7 @@ namespace ILRuntime.Runtime.Enviorment
                         }
                         sb.Append('>');
                         var asmName = sb.ToString();
+                        Darkfeast.Log($"asm {asmName}" );
                         if (bt.FullName != asmName)
                             mapType[asmName] = bt;
                     }
@@ -609,6 +617,8 @@ namespace ILRuntime.Runtime.Enviorment
                     if (!isByRef)
                     {
                         mapType[fullname] = bt;
+
+                        Darkfeast.Log($"GetType by fullname  isArray  !isByRef {fullname}   {bt}",E_ColorType.Temp);
                         return bt;
                     }
                 }
@@ -621,6 +631,7 @@ namespace ILRuntime.Runtime.Enviorment
                     mapType[fullname] = res;
                     mapType[res.FullName] = res;
                     mapTypeToken[res.GetHashCode()] = res;
+                    Darkfeast.Log($"GetType by fullname  isByRef {fullname}   {bt}",E_ColorType.Over);
                     return res;
                 }
                 else
@@ -632,6 +643,7 @@ namespace ILRuntime.Runtime.Enviorment
             else
             {
                 Type t = Type.GetType(fullname);
+                //Darkfeast.Log($"ttt  {fullname}");
                 if (t != null)
                 {
                     if (!clrTypeMapping.TryGetValue(t, out res))
@@ -639,10 +651,17 @@ namespace ILRuntime.Runtime.Enviorment
                         res = new CLRType(t, this);
                         clrTypeMapping[t] = res;
                     }
+
+                    if(fullname!=res.FullName)
+                    {
+                        Darkfeast.Log($"!!!!!!xxxxxxx!!!!!   fm__ {fullname}  res.fm__ {res.FullName}",E_ColorType.Over);
+                    }
                     mapType[fullname] = res;
                     mapType[res.FullName] = res;
                     mapType[t.AssemblyQualifiedName] = res;
                     mapTypeToken[res.GetHashCode()] = res;
+
+                    Darkfeast.Log($"GetType by fullname  normal    fm {fullname}   res.fm {res.FullName}   t.asm {t.AssemblyQualifiedName}   has {res.GetHashCode()}",E_ColorType.Init);
                     return res;
                 }
             }
@@ -881,11 +900,15 @@ namespace ILRuntime.Runtime.Enviorment
             res = GetType(typename);
             if (res == null)
             {
+                Darkfeast.Log($"res ==null   typename  {typename} ", E_ColorType.UI);
                 typename = typename.Replace("/", "+");
                 res = GetType(typename);
             }
             if (res == null && scope != null)
+            {
+                Darkfeast.Log($"typename  {typename}   scope  {scope}", E_ColorType.UI);
                 res = GetType(typename + ", " + scope);
+            }
             if (res == null)
             {
                 if (scope != null)
@@ -900,6 +923,8 @@ namespace ILRuntime.Runtime.Enviorment
                                 break;
                         }
                     }
+
+                    Darkfeast.Log($"res still null   typename  {typename}   scope  {scope}", E_ColorType.UI);
                 }
                 if (res == null)
                 {
@@ -1052,6 +1077,7 @@ namespace ILRuntime.Runtime.Enviorment
         /// <returns></returns>
         public object Invoke(string type, string method, object instance, params object[] p)
         {
+            Darkfeast.Log($"Invoke  type  {type}");
             IType t = GetType(type);
             if (t == null)
                 return null;
