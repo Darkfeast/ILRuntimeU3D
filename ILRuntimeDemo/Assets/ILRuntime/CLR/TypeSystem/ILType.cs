@@ -295,6 +295,8 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 if (def is TypeSpecification)
                 {
+
+                    Darkfeast.Log($"def   {def}    fm   {def.FullName}",E_ColorType.Temp);
                     if (def.IsByReference || def is ArrayType)
                     {
                         definition = null;

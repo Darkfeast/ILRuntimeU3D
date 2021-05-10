@@ -10,13 +10,13 @@ namespace HotFix_Project
         public InstanceClass()
         {
             Darkfeast.Log("0 ctor");
-            UnityEngine.Debug.Log("!!! InstanceClass::InstanceClass()");
+            Darkfeast.Log("!!! InstanceClass::InstanceClass()");
             this.id = 0;
         }
 
         public InstanceClass(int id)
         {
-            UnityEngine.Debug.Log("!!! InstanceClass::InstanceClass() id = " + id);
+            Darkfeast.Log("!!! InstanceClass::InstanceClass() id = " + id);
             this.id = id;
         }
 
@@ -28,7 +28,7 @@ namespace HotFix_Project
         // static method
         public static void StaticFunTest()
         {
-            UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest()");
+            Darkfeast.Log("!!! InstanceClass.StaticFunTest()");
         }
 
         //public static void StaticFunTest2(int a)
@@ -37,12 +37,12 @@ namespace HotFix_Project
         //}
         public static void StaticFunTest2(float a)
         {
-            UnityEngine.Debug.Log("!!! InstanceClass.StaticFunTest2(float), a=" + a);
+            Darkfeast.Log("!!! InstanceClass.StaticFunTest2(float), a=" + a);
         }
 
         public static void GenericMethod<T>(T a)
         {
-            UnityEngine.Debug.Log("!!! InstanceClass.GenericMethod(), a=" + a);
+            Darkfeast.Log("!!! InstanceClass.GenericMethod(), a=" + a);
         }
 
         public void RefOutMethod(int addition, out List<int> lst, ref int val)
