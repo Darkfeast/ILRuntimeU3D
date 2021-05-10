@@ -1083,6 +1083,8 @@ namespace ILRuntime.Runtime.Enviorment
             var m = t.GetMethod(method, p != null ? p.Length : 0);
             if (m != null)
             {
+                //判断clrType(运行时参数列表 ) 与实际的参数列表里面的每个参数是否类型对应
+                //t2.IsAssignableFrom(type t)     判断t是否能转化为t2  
                 for (int i = 0; i < m.ParameterCount; i++)
                 {
                     if (p[i] == null)
@@ -1121,6 +1123,8 @@ namespace ILRuntime.Runtime.Enviorment
             return null;
         }
 
+
+        //从解释器池里面取出一个解释器
         ILIntepreter RequestILIntepreter()
         {
             ILIntepreter inteptreter = null;
@@ -1145,6 +1149,7 @@ namespace ILRuntime.Runtime.Enviorment
             return inteptreter;
         }
 
+        //方法调用完后，释放并回收对应解释器   free :释放
         internal void FreeILIntepreter(ILIntepreter inteptreter)
         {
             lock (freeIntepreters)

@@ -84,6 +84,8 @@ namespace ILRuntime.Runtime.Intepreter
             int mStackBase = mStack.Count;
             StackObject* esp = stack.StackBase;
             stack.ResetValueTypePointer();
+
+            //判断是否是实例方法  如果是需要先将实例压入栈
             if (method.HasThis)
             {
                 if (instance is CrossBindingAdaptorType)
@@ -95,6 +97,7 @@ namespace ILRuntime.Runtime.Intepreter
             esp = PushParameters(method, esp, p);
             bool unhandledException;
             esp = Execute(method, esp, out unhandledException);
+            //返回值
             object result = method.ReturnType != domain.VoidType ? method.ReturnType.TypeForCLR.CheckCLRTypes(StackObject.ToObject((esp - 1), domain, mStack)) : null;
             //ClearStack
 #if DEBUG && !DISABLE_ILRUNTIME_DEBUG
@@ -4282,6 +4285,8 @@ namespace ILRuntime.Runtime.Intepreter
             return stack.PopFrame(ref frame, esp);
         }
 
+
+        //打印程序执行状态栈  用于分析
         void DumpStack(StackObject* esp)
         {
             AppDomain.DebugService.DumpStack(esp, stack);
